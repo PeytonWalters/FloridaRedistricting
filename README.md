@@ -1,5 +1,6 @@
 # Florida Redistricting Project
 Author: Peyton Walters
+
 Date: 4/14/2025
 
 This repository contains the code to aggregate Florida's precinct level votes from the 2024 general election and disaggregates it into Census block level polygons. Then it uses these Census blocks to create new districts, calculating the Polsby-Popper score and an efficiency metric based on wasted votes. Currently, data cleansing is the main bottleneck but the proof of concept code is suitable. 
