@@ -346,13 +346,14 @@ district_map = districts23.merge(
 
 # Calculate Polsby-Popper and wasted votes for the districts
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+district_map_proj = district_map.to_crs(epsg=26917)  # UTM Zone 17N
 
-district_map['perimeter'] = district_map.geometry.length
-district_map['area'] = district_map.geometry.area
+district_map_proj['perimeter'] = district_map_proj.geometry.length
+district_map_proj['area'] = district_map_proj.geometry.area
     
 # Calculate Polsby-Popper score
 # Score = 4π × Area ÷ (Perimeter²)
-district_map['polsby_popper'] = (4 * math.pi * district_map['area']) / (district_map['perimeter'] ** 2)
+district_map['polsby_popper'] = (4 * math.pi * district_map_proj['area']) / (district_map_proj['perimeter'] ** 2)
 
 # Calculate wasted votes for each party in each district
 district_map['winning_threshold'] = district_map['total_votes'] / 2 + 1
@@ -410,7 +411,7 @@ final_merged_geodata['dem_pct'] = final_merged_geodata['dem_pct'].fillna(0.5)  #
 final_merged_geodata['precinct_id'] = range(1, len(final_merged_geodata) + 1)
 
 print("Unify precinct boundaries")
-precinct_boundary = final_merged_geodata.unary_union
+precinct_boundary = final_merged_geodata.geometry.union_all()
 
 print("Intersecting census blocks with precincts")
 
